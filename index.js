@@ -65,13 +65,13 @@ async function downloadImage(images, insId) {
                 }, function (error, response, body) {
                     fs.writeFile(path.join(__dirname, `images/${insId}`, info.base), body, 'binary', function (err) {
                         if (err) reject(err)
-                        console.log(`${image} 抓取成功`)
+                        console.log(`${info.base} 抓取成功`)
                         resolve()
                     })
                 })
             })
         } catch (err) {
-            console.error(`========= fetch image fail: ${image} ==========`)
+            console.error(`${image} 抓取失败`)
         }
         await sleep(100)
     }
@@ -81,7 +81,7 @@ async function fetchImage(params, insId) {
     const apiURL = getApi(params)
     const response = await rp.get(apiURL, requestOptions)
     if (response.statusCode >= 300) {
-        console.log(`=============${response.statusCode}============`)
+        console.log(`============= fetchImage() statusCode: ${response.statusCode} ============`)
         await sleep(5000)
         await fetchImage(params, insId)
         return
